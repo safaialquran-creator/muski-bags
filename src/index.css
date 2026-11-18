@@ -1,0 +1,288 @@
+@import "tailwindcss";
+
+:root {
+  /* Core Brand Palette (exact logo tokens) */
+  --gold-dark: #9C6F1E;
+  --gold: #C9A24B;
+  --gold-light: #EBCF7A;
+  --gold-gradient: linear-gradient(135deg, #B8893A 0%, #C9A24B 38%, #F1DC8E 68%, #C9A24B 100%);
+  --black: #111111;
+  --white: #FFFFFF;
+  --cream: #FBF7F0;
+  --muted: #6B6B6B;
+
+  /* Light Logo-Matched Surface & Text Tokens */
+  --bg-page: var(--white);
+  --bg-surface: var(--cream);
+  --bg-card: #FFFFFF;
+  --bg-subtle: #FBF7F0;
+  --text-primary: var(--black);
+  --text-secondary: var(--muted);
+  --text-gold: var(--gold-dark);
+  --border-hairline: rgba(201, 162, 75, 0.25);
+  --border-gold: rgba(201, 162, 75, 0.55);
+  --gold-glow: rgba(235, 207, 122, 0.26);
+  --gold-shadow: rgba(201, 162, 75, 0.24);
+  --header-scrolled-bg: rgba(255, 255, 255, 0.94);
+  --outline-btn-text: var(--black);
+  --outline-btn-border: var(--gold);
+  --outline-btn-hover-bg: var(--cream);
+  --outline-btn-hover-text: var(--gold-dark);
+
+  /* Anti-Gravity Tunables (overridden by ANIMATION_SETTINGS in JS) */
+  --ag-float-distance: 9px;
+  --ag-tilt-max: 6deg;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Jost', sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-serif-display {
+    font-family: 'Bodoni Moda', serif;
+  }
+
+  .font-sans-body {
+    font-family: 'Jost', sans-serif;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+}
+
+/* Tagline formatting: always thin, widely letter-spaced uppercase */
+.brand-tagline {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+
+/* Gold gradient text & light champagne button utilities (matching logo) */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #9C6F1E 0%, #C9A24B 42%, #DFBE64 72%, #A87B28 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #C9A24B 0%, #EBCF7A 52%, #C9A24B 100%);
+  color: var(--black);
+  border-radius: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(156, 111, 30, 0.25);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease, filter 300ms ease;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -8px var(--gold-shadow);
+  filter: brightness(1.03);
+}
+
+.btn-outline-luxury {
+  background: var(--white);
+  color: var(--outline-btn-text);
+  border: 1.5px solid var(--outline-btn-border);
+  border-radius: 12px;
+  font-weight: 500;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+.btn-outline-luxury:hover {
+  transform: translateY(-2px);
+  background: var(--outline-btn-hover-bg);
+  color: var(--outline-btn-hover-text);
+  border-color: var(--gold-dark);
+}
+
+/* Announcement bar marquee */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Anti-gravity levitation keyframes (transform + opacity only) */
+@keyframes ag-levitate {
+  0%, 100% {
+    transform: translate3d(0, calc(var(--ag-float-y, var(--ag-float-distance)) * 0.5), 0);
+  }
+  50% {
+    transform: translate3d(0, calc(var(--ag-float-y, var(--ag-float-distance)) * -0.5), 0);
+  }
+}
+
+@keyframes ag-ground-shadow {
+  0%, 100% {
+    transform: scale(1.04);
+    opacity: 0.42;
+  }
+  50% {
+    transform: scale(0.84);
+    opacity: 0.2;
+  }
+}
+
+.ag-float-item {
+  animation-name: ag-levitate;
+  animation-duration: var(--ag-duration, 6.8s);
+  animation-delay: var(--ag-delay, 0s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.ag-ground-ellipse {
+  background: radial-gradient(ellipse at center, var(--gold-shadow) 0%, rgba(201, 162, 75, 0.08) 52%, transparent 74%);
+  animation-name: ag-ground-shadow;
+  animation-duration: var(--ag-duration, 6.8s);
+  animation-delay: var(--ag-delay, 0s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+/* Pause animations off-screen or when tab is hidden */
+html[data-ag-paused="true"] .ag-float-item,
+html[data-ag-paused="true"] .ag-ground-ellipse,
+html[data-ag-paused="true"] .marquee-track,
+[data-ag-offscreen="true"] .ag-float-item,
+[data-ag-offscreen="true"] .ag-ground-ellipse,
+[data-ag-offscreen="true"].ag-float-item {
+  animation-play-state: paused !important;
+}
+
+/* One lift-off entrance on page load for the hero only */
+@keyframes hero-liftoff {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-liftoff {
+  animation: hero-liftoff 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Quick View rise animation */
+@keyframes modal-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.modal-rise {
+  animation: modal-rise 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Soft levitation depth shadow on already alpha-feathered bag PNGs */
+.bag-feather-mask {
+  filter: drop-shadow(0 16px 24px rgba(156, 111, 30, 0.14));
+}
+
+/* Desktop 3D tilt container */
+.ag-tilt-surface {
+  transform: perspective(950px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    translate3d(0, var(--tilt-lift, 0px), 0);
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 340ms ease,
+    box-shadow 340ms ease;
+  transform-style: preserve-3d;
+}
+
+.ag-tilt-surface[data-tilting="true"] {
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.ag-inner-parallax {
+  transform: translate3d(var(--inner-x, 0px), var(--inner-y, 0px), 0);
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ag-tilt-surface[data-tilting="true"] .ag-inner-parallax {
+  transition: none;
+}
+
+.ag-hover-sheen {
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.24) 46%,
+    rgba(235, 207, 122, 0.22) 52%,
+    transparent 76%
+  );
+  transform: translate3d(var(--sheen-x, -120%), 0, 0);
+  opacity: var(--sheen-opacity, 0);
+  transition: opacity 320ms ease, transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Safe area padding helper for mobile bottom buttons / sheets */
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Reduced motion: turn ALL floating, tilt, sheen, marquee, and parallax off */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .ag-float-item,
+  .ag-ground-ellipse,
+  .marquee-track,
+  .hero-liftoff,
+  .modal-rise {
+    animation: none !important;
+    transform: none !important;
+  }
+  .ag-tilt-surface,
+  .ag-inner-parallax,
+  .ag-hover-sheen {
+    transform: none !important;
+    transition: none !important;
+  }
+  [data-parallax-depth] {
+    transform: none !important;
+  }
+}
